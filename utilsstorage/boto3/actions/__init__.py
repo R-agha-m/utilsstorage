@@ -1,5 +1,9 @@
 from .upload_fileobj import upload_fileobj
 from .upload_fileobj_by_base64 import upload_fileobj_by_base64
-from .generate_url import generate_url
+from .generate_temporary_url import generate_temporary_url
 from .delete_object import delete_object
 from .list_objects import list_objects
+# from .make_dir_public import make_dir_public
+from .create_bucket import create_bucket
+from .upload_fileobj_by_base64_extensionless import upload_fileobj_by_base64_extensionless
+from .generate_permanent_url import generate_permanent_url

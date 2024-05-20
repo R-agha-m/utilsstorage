@@ -1,12 +1,13 @@
 from boto3 import client as _client
 
 
-def generate_url(
+def generate_temporary_url(
         client: _client,
         key: str,
         bucket: str,
         server_address_for_client: str,
         endpoint_url: str,
+        expires_in: int = 3600,
 ) -> str:
     temp_url = client.generate_presigned_url(
         ClientMethod='get_object',
@@ -14,7 +15,7 @@ def generate_url(
             'Bucket': bucket,
             'Key': key
         },
-        ExpiresIn=3600,
+        ExpiresIn=expires_in,
     )
 
     temp_url = temp_url.replace(
