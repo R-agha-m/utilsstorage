@@ -17,7 +17,8 @@ def upload_fileobj_by_base64(
         client: _client,
         key: str,  # file address like /public/dsfsdfsdfsdf.jpg
         metadata: Optional[Dict] = None,  # {"user_id: 1, "name": "ali"}
-        bucket: Optional[str] = None
+        bucket: Optional[str] = None,
+        content_disposition: str = None,
 ) -> str:
     """
     content: str,
@@ -41,6 +42,7 @@ def upload_fileobj_by_base64(
         content=b64decode(content),
         client=client,
         content_type=mime_type,
+        content_disposition=content_disposition,
         key=key,  # extension has leading .
         metadata={
             'extension': extension,

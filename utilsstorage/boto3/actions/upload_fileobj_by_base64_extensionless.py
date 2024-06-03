@@ -16,7 +16,8 @@ def upload_fileobj_by_base64_extensionless(
         client: _client,
         key: str,  # file address like /public/dsfsdfsdfsdf.jpg
         metadata: Optional[Dict] = None,  # {"user_id: 1, "name": "ali"}
-        bucket: Optional[str] = None
+        bucket: Optional[str] = None,
+        content_disposition: str = None,
 ) -> str:
     """
     content: str,
@@ -34,6 +35,7 @@ def upload_fileobj_by_base64_extensionless(
         key=key,
         metadata=metadata,
         bucket=bucket,
+        content_disposition=content_disposition,
     )
 
     return key

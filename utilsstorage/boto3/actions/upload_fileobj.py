@@ -7,15 +7,17 @@ from io import (
     BytesIO,
     BufferedReader,
 )
+from tempfile import SpooledTemporaryFile
 
 from boto3 import client as _client
 
 
 def upload_fileobj(
-        content: ByteString | BytesIO | BufferedReader,
+        content: ByteString | BytesIO | BufferedReader | SpooledTemporaryFile,
         client: _client,
-        content_type: str,  # mime_type: "image/jpeg"
         key: str,  # /public/dsfsdfsdfsdf.jpg
+        content_type: str = None,  # mime_type: "image/jpeg"
+        content_disposition: str = None,  # "Content-Disposition": f"attachment; filename={file_name}"
         metadata: Optional[Dict] = None,  # {"user_id: 1, "name": "ali"}
         bucket: Optional[str] = None
 ) -> None:
@@ -26,10 +28,13 @@ def upload_fileobj(
     if content_type:
         extra_args["ContentType"] = content_type
 
+    if content_disposition:
+        extra_args["ContentDisposition"] = content_disposition
+
     if isinstance(content, ByteString):
         content = BytesIO(content)
 
-    result = client.upload_fileobj(
+    client.upload_fileobj(
         Fileobj=content,
         Bucket=bucket,
         Key=key,
