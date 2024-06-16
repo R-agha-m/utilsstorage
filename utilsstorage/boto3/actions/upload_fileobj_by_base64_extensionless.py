@@ -5,6 +5,7 @@ from typing import (
 from base64 import b64decode
 
 from boto3 import client as _client
+from utilscommon.utilscommon.exception import ProjectBaseException
 
 from . import upload_fileobj as _upload_fileobj
 
@@ -28,8 +29,19 @@ def upload_fileobj_by_base64_extensionless(
     mime_type = content.split(";", 1)[0].replace("data:", "")
     content = content.split(",", 1)[1]
 
+    try:
+        decoded_content = b64decode(content)
+    except Exception as e:
+        raise ProjectBaseException(
+            status_code=422,
+            success=False,
+            data=None,
+            error=str(e),
+            message="فرمت base64 ارسالی اشتباه است.",
+        )
+
     _upload_fileobj(
-        content=b64decode(content),
+        content=decoded_content,
         client=client,
         content_type=mime_type,
         key=key,

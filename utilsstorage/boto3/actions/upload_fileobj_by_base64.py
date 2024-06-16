@@ -6,6 +6,7 @@ from mimetypes import guess_extension
 from base64 import b64decode
 
 from boto3 import client as _client
+from utilscommon.utilscommon.exception import ProjectBaseException
 
 from . import upload_fileobj as _upload_fileobj
 
@@ -38,8 +39,19 @@ def upload_fileobj_by_base64(
 
     key = f"{key}{extension}"
 
+    try:
+        decoded_content = b64decode(content)
+    except Exception as e:
+        raise ProjectBaseException(
+            status_code=422,
+            success=False,
+            data=None,
+            error=str(e),
+            message="فرمت base64 ارسالی اشتباه است.",
+        )
+
     _upload_fileobj(
-        content=b64decode(content),
+        content=decoded_content,
         client=client,
         content_type=mime_type,
         content_disposition=content_disposition,
